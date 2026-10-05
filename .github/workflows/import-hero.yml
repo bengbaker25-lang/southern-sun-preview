@@ -17,20 +17,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Download compressed Southern Sun hero
+      - name: Download and verify Southern Sun hero
         run: |
           mkdir -p assets
-          curl -L --fail --retry 4 --retry-delay 2 \
-            'https://drive.google.com/uc?export=download&id=1hwfLqQxGtakg0MDwjiIWsyK6dZu2o4sj' \
+          curl -L --fail --retry 4 --retry-delay 1 \
+            'https://sdmntprcentralus.oaiusercontent.com/files/00000000-131c-81f5-981c-519716b576e0/raw?se=2026-10-05T04%3A33%3A40Z&sp=r&sv=2026-02-06&sr=b&scid=25411fa0-9b35-59cb-bff8-dd72ea250ef0&skoid=bbd22fc4-f881-4ea4-b2f3-c12033cf6a8b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-04T16%3A43%3A51Z&ske=2026-10-05T16%3A43%3A51Z&sks=b&skv=2026-02-06&sig=oJgu9Js6oQsBpyot0g%2BaJF62eHFeMMgNTX/8zlFouHU%3D' \
             -o assets/hero.mp4
-          test $(wc -c < assets/hero.mp4) -gt 500000
-          file assets/hero.mp4
+          test "$(wc -c < assets/hero.mp4)" -gt 700000
+          file assets/hero.mp4 | grep -E 'ISO Media|MP4'
+          ffprobe -v error -select_streams v:0 -show_entries stream=codec_name,width,height,pix_fmt -of default=nw=1 assets/hero.mp4
 
-      - name: Commit hero asset
+      - name: Commit verified hero asset
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add assets/hero.mp4
           git diff --cached --quiet && exit 0
-          git commit -m 'Host hero video locally for reliable autoplay'
+          git commit -m 'Replace broken hero with verified H264 MP4'
           git push
