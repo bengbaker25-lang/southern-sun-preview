@@ -1,7 +1,7 @@
 const $=(s,c=document)=>c.querySelector(s),$$=(s,c=document)=>[...c.querySelectorAll(s)];
 
 /* Load preview-only polish without touching Shopify */
-const polish=document.createElement('link');polish.rel='stylesheet';polish.href='fixes.css?v=4';document.head.appendChild(polish);
+const polish=document.createElement('link');polish.rel='stylesheet';polish.href='fixes.css?v=5';document.head.appendChild(polish);
 
 const header=$('#header'),progress=$('#scrollProgress');
 window.addEventListener('scroll',()=>{header?.classList.toggle('scrolled',scrollY>55);const h=document.documentElement.scrollHeight-innerHeight;if(progress)progress.style.width=(h?scrollY/h*100:0)+'%'});
@@ -54,3 +54,13 @@ $$('.product-card .product-img').forEach(link=>{
   link.addEventListener('click',e=>{e.preventDefault();openProductModal(product);});
   link.closest('.product-card')?.addEventListener('click',e=>{if(e.target.closest('a'))return;openProductModal(product);});
 });
+
+/* Email capture section for the preview. Persistence gets connected to the chosen email platform at handoff. */
+const footer=$('footer');
+if(footer&&!$('.email-signup')){
+  const section=document.createElement('section');section.className='email-signup reveal';
+  section.innerHTML='<div><div class="eyebrow">GET ON THE LIST</div><h2>FIRST LIGHT.<br>FIRST LOOK.</h2></div><div class="email-signup-copy"><p>New drops, field notes, and first access before everyone else.</p><form class="email-signup-form" novalidate><input type="email" name="email" autocomplete="email" placeholder="EMAIL ADDRESS" aria-label="Email address" required><button type="submit">JOIN →</button></form><div class="email-signup-status" aria-live="polite"></div></div>';
+  footer.before(section);obs.observe(section);
+  const form=$('.email-signup-form',section),status=$('.email-signup-status',section);
+  form.addEventListener('submit',e=>{e.preventDefault();const input=$('input',form),email=input.value.trim();if(!/^\S+@\S+\.\S+$/.test(email)){status.textContent='ENTER A VALID EMAIL.';return;}const saved=JSON.parse(localStorage.getItem('southernSunPreviewEmails')||'[]');if(!saved.includes(email))saved.push(email);localStorage.setItem('southernSunPreviewEmails',JSON.stringify(saved));status.textContent="YOU'RE ON THE LIST.";form.reset();});
+}
