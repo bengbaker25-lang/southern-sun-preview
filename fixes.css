@@ -1,0 +1,41 @@
+/* Final polish overrides — preview only */
+.site-header{background:var(--cream)!important;overflow:visible!important}
+.brand-image{display:flex!important;align-items:center!important;overflow:visible!important;min-width:210px}
+.brand-image img{width:clamp(170px,13vw,215px)!important;max-height:none!important;height:auto!important;object-fit:contain!important;object-position:center!important;mix-blend-mode:multiply!important;filter:grayscale(1) contrast(3.2) brightness(1.35)!important;background:transparent!important}
+
+/* Keep the hero clean: only the pause/play control remains */
+.hero-side-label,.video-controls span{display:none!important}
+.video-controls{right:4.5vw!important;top:138px!important}
+.video-controls button{background:rgba(7,20,17,.42)!important;backdrop-filter:blur(5px)}
+
+/* Product CTA should never cover the name / price */
+.quick-add{display:none!important}
+.product-img{display:block!important}
+.product-row{position:relative!important;z-index:3!important;background:var(--cream)!important;padding:15px 1px 7px!important;min-height:66px!important}
+.product-card{cursor:pointer}
+.product-card:after{content:'VIEW DETAILS  ↗';display:inline-block;margin-top:8px;font-size:8px;font-weight:800;letter-spacing:.16em;border-bottom:1px solid rgba(8,23,19,.34);padding-bottom:4px}
+
+/* Product lightbox / gallery */
+.product-modal{position:fixed;inset:0;z-index:5000;display:grid;place-items:center;padding:24px;background:rgba(4,14,11,.78);backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .25s ease}
+.product-modal.open{opacity:1;pointer-events:auto}
+.product-modal-card{position:relative;width:min(1120px,96vw);max-height:92vh;overflow:auto;background:var(--cream);color:var(--ink);box-shadow:0 28px 90px rgba(0,0,0,.32)}
+.product-modal-close{position:absolute;z-index:4;right:18px;top:18px;width:42px;height:42px;border:1px solid rgba(8,23,19,.2);border-radius:50%;background:rgba(241,236,223,.94);font-size:25px;line-height:1;color:var(--ink)}
+.product-modal-layout{display:grid;grid-template-columns:1.35fr .65fr;min-height:620px}
+.product-modal-gallery{padding:18px;background:#e6decd}
+.product-modal-main{width:100%;height:600px;display:block;object-fit:cover;background:#d7cebc}
+.product-modal-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.product-modal-thumb{border:0;padding:0;background:#d7cebc;height:105px;overflow:hidden;opacity:.68;transition:.2s}
+.product-modal-thumb.active,.product-modal-thumb:hover{opacity:1;outline:2px solid var(--ink);outline-offset:-2px}
+.product-modal-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.product-modal-info{padding:58px 44px 40px;display:flex;flex-direction:column;justify-content:center}
+.product-modal-kicker{font-size:8px;font-weight:800;letter-spacing:.24em;color:#68746c;margin-bottom:13px}
+.product-modal-info h3{font-family:var(--display);font-size:clamp(42px,5vw,76px);line-height:.9;font-weight:400;margin:0 0 18px}
+.product-modal-price{font-size:15px;font-weight:800;margin-bottom:22px}
+.product-modal-desc{font-size:12px;line-height:1.75;color:#526057;max-width:430px}
+.product-modal-shop{margin-top:30px;align-self:flex-start;display:inline-flex;gap:12px;align-items:center;background:var(--ink);color:var(--cream);padding:15px 20px;font-size:9px;font-weight:800;letter-spacing:.16em}
+
+@media(max-width:850px){
+  .brand-image{min-width:0}.brand-image img{width:155px!important}
+  .video-controls{top:126px!important;right:18px!important}
+  .product-modal{padding:10px}.product-modal-layout{grid-template-columns:1fr}.product-modal-main{height:52vh;min-height:360px}.product-modal-info{padding:34px 24px 32px}.product-modal-thumbs{grid-template-columns:repeat(4,1fr)}.product-modal-thumb{height:78px}
+}
