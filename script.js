@@ -2,7 +2,17 @@ const $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySelect
 const header=$('#header'),progress=$('#scrollProgress');
 window.addEventListener('scroll',()=>{header.classList.toggle('scrolled',scrollY>55);const h=document.documentElement.scrollHeight-innerHeight;progress.style.width=(h?scrollY/h*100:0)+'%'});
 const obs=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('on')),{threshold:.12});$$('.reveal').forEach(el=>obs.observe(el));
-const vid=$('#heroVideo'),toggle=$('#videoToggle');if(vid&&toggle){toggle.addEventListener('click',()=>{if(vid.paused){vid.play();toggle.textContent='Ⅱ';toggle.setAttribute('aria-label','Pause video')}else{vid.pause();toggle.textContent='▶';toggle.setAttribute('aria-label','Play video')}})}
+const vid=$('#heroVideo'),toggle=$('#videoToggle');
+if(vid){
+  vid.muted=true;vid.defaultMuted=true;vid.playsInline=true;
+  const forcePlay=()=>{vid.muted=true;const p=vid.play();if(p&&p.catch)p.catch(()=>{});};
+  forcePlay();
+  ['loadedmetadata','canplay','canplaythrough'].forEach(ev=>vid.addEventListener(ev,forcePlay,{once:false}));
+  window.addEventListener('pageshow',forcePlay);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)forcePlay()});
+  document.addEventListener('pointerdown',()=>{if(vid.paused)forcePlay()},{once:true});
+}
+if(vid&&toggle){toggle.addEventListener('click',()=>{if(vid.paused){vid.play();toggle.textContent='Ⅱ';toggle.setAttribute('aria-label','Pause video')}else{vid.pause();toggle.textContent='▶';toggle.setAttribute('aria-label','Play video')}})}
 const search=$('#searchPanel');$('#searchBtn').onclick=()=>{search.classList.add('open');setTimeout(()=>search.querySelector('input').focus(),150)};$('#closeSearch').onclick=()=>search.classList.remove('open');document.addEventListener('keydown',e=>{if(e.key==='Escape')search.classList.remove('open')});
 $$('.chip').forEach(c=>c.onclick=()=>{const f=c.dataset.filter;$$('.chip').forEach(x=>x.classList.remove('active'));c.classList.add('active');$$('.product-card').forEach(card=>{card.style.display=(f==='all'||card.dataset.type===f)?'block':'none'})});
 $('.newsletter form').addEventListener('submit',e=>{e.preventDefault();const btn=e.currentTarget.querySelector('button');btn.textContent='YOU’RE IN ✓';setTimeout(()=>btn.textContent='JOIN →',1800)});
