@@ -1,7 +1,7 @@
 const $=(s,c=document)=>c.querySelector(s),$$=(s,c=document)=>[...c.querySelectorAll(s)];
 
-/* Load preview-only polish without touching Shopify */
-const polish=document.createElement('link');polish.rel='stylesheet';polish.href='fixes.css?v=5';document.head.appendChild(polish);
+/* Preview-only polish. Nothing here writes to Shopify. */
+const polish=document.createElement('link');polish.rel='stylesheet';polish.href='fixes.css?v=7';document.head.appendChild(polish);
 
 const header=$('#header'),progress=$('#scrollProgress');
 window.addEventListener('scroll',()=>{header?.classList.toggle('scrolled',scrollY>55);const h=document.documentElement.scrollHeight-innerHeight;if(progress)progress.style.width=(h?scrollY/h*100:0)+'%'});
@@ -13,6 +13,23 @@ if(vid&&toggle)toggle.addEventListener('click',()=>{if(vid.paused){vid.play();to
 
 const search=$('#searchPanel'),searchBtn=$('#searchBtn'),closeSearch=$('#closeSearch');if(searchBtn&&search)searchBtn.onclick=()=>{search.classList.add('open');setTimeout(()=>search.querySelector('input')?.focus(),150)};if(closeSearch&&search)closeSearch.onclick=()=>search.classList.remove('open');document.addEventListener('keydown',e=>{if(e.key==='Escape'){search?.classList.remove('open');closeProductModal();}});
 
+/* Link the only active social requested right now. */
+$$('a').forEach(a=>{if(a.textContent.trim().toLowerCase().startsWith('instagram')){a.href='https://www.instagram.com/southernsunfishing/';a.target='_blank';a.rel='noopener noreferrer';}});
+
+/* Use the strongest fish-only and performance images from Drive. */
+const fishFeature=$('.fish-feature img');if(fishFeature){fishFeature.src='https://drive.google.com/thumbnail?id=1qF95b3N_x6JmWlDXqeKfVaYdemQ_36xF&sz=w2200';fishFeature.alt='Tarpon at the surface';}
+const perfCard=$('a[href*="southern-sun-hooded-performance-shirt"] .product-img, a.product-img[href*="southern-sun-hooded-performance-shirt"]');
+const perfLink=$('a.product-img[href*="southern-sun-hooded-performance-shirt"]');if(perfLink){const im=$('img',perfLink);if(im){im.src='https://drive.google.com/thumbnail?id=1SNJi7mH05OXt7lyCBWAZoSsqPZ-gPb0Q&sz=w1600';im.alt='Southern Sun Hooded Performance Shirt';}}
+const perfEditorial=$('.editorial-tile:nth-child(3) img');if(perfEditorial){perfEditorial.src='https://drive.google.com/thumbnail?id=1SNJi7mH05OXt7lyCBWAZoSsqPZ-gPb0Q&sz=w1600';}
+
+/* Preview newsletter: visually functional, intentionally not connected to Shopify yet. */
+if(!$('.preview-newsletter')){
+  const newsletter=document.createElement('section');newsletter.className='preview-newsletter';
+  newsletter.innerHTML='<div><div class="eyebrow">GET ON THE LIST</div><h2>FIRST LIGHT.<br>FIRST LOOK.</h2></div><div><p>New drops, fishing stories, and first access before everybody else.</p><form id="previewSignup"><input id="previewEmail" type="email" required placeholder="EMAIL ADDRESS" aria-label="Email address"><button type="submit">JOIN →</button></form><div class="signup-note" id="signupNote">Preview signup only — final email integration will be connected at handoff.</div></div>';
+  const footer=document.querySelector('footer');document.body.insertBefore(newsletter,footer);
+  newsletter.querySelector('form').addEventListener('submit',e=>{e.preventDefault();const email=newsletter.querySelector('input').value.trim();if(!email)return;localStorage.setItem('southernSunPreviewEmail',email);newsletter.querySelector('#signupNote').textContent='YOU’RE ON THE PREVIEW LIST ✓';newsletter.querySelector('input').value='';});
+}
+
 const products={
   'snook-southern-sun-hat':{title:'Snook Hat',price:'$30',kicker:'HEADWEAR',desc:'Steel-blue crown, dark-grey rope, structured polyester shell, and signature snook embroidery.',url:'https://southernsunfishing.com/products/snook-southern-sun-hat',images:['https://cdn.shopify.com/s/files/1/0966/4466/1534/files/DSC00051.jpg?v=1770073306','https://cdn.shopify.com/s/files/1/0966/4466/1534/files/IMG_1378.jpg?v=1770073306','https://cdn.shopify.com/s/files/1/0966/4466/1534/files/IMG_1377.jpg?v=1770073306','https://cdn.shopify.com/s/files/1/0966/4466/1534/files/IMG_1374.jpg?v=1770073306']},
   'signature-southern-sun-hat':{title:'Signature Hat',price:'$30',kicker:'HEADWEAR',desc:'Light-grey crown, dark-grey rope, structured cotton/poly shell, and the Southern Sun signature mark.',url:'https://southernsunfishing.com/products/signature-southern-sun-hat',images:['https://cdn.shopify.com/s/files/1/0966/4466/1534/files/DSC00012.jpg?v=1770073333','https://cdn.shopify.com/s/files/1/0966/4466/1534/files/IMG_1383.jpg?v=1770073333','https://cdn.shopify.com/s/files/1/0966/4466/1534/files/IMG_1385.jpg?v=1770073333','https://cdn.shopify.com/s/files/1/0966/4466/1534/files/IMG_1386.jpg?v=1770073333']},
@@ -21,7 +38,7 @@ const products={
   'southern-sun-mangrove-tee':{title:'Mangrove Tee',price:'$40',kicker:'T-SHIRT',desc:'Garment-dyed Comfort Colors pocket tee with the mangrove waterway artwork on the back.',url:'https://southernsunfishing.com/products/southern-sun-mangrove-tee',images:['https://cdn.shopify.com/s/files/1/0966/4466/1534/files/DSC01289.jpg?v=1780503321','https://cdn.shopify.com/s/files/1/0966/4466/1534/files/DSC01267.jpg?v=1780503321','https://cdn.shopify.com/s/files/1/0966/4466/1534/files/DSC01303.jpg?v=1780503325','https://cdn.shopify.com/s/files/1/0966/4466/1534/files/DSC01338.jpg?v=1780503325']},
   'southern-sun-sportfisher-tee':{title:'Sportfisher Tee',price:'$40',kicker:'T-SHIRT',desc:'Garment-dyed Comfort Colors pocket tee with a relaxed fit and offshore sportfisher artwork.',url:'https://southernsunfishing.com/products/southern-sun-sportfisher-tee',images:['https://cdn.shopify.com/s/files/1/0966/4466/1534/files/DSC01084.jpg?v=1780502824','https://cdn.shopify.com/s/files/1/0966/4466/1534/files/DSC01120.jpg?v=1780502844','https://cdn.shopify.com/s/files/1/0966/4466/1534/files/DSC00930.jpg?v=1780502841','https://cdn.shopify.com/s/files/1/0966/4466/1534/files/DSC01227.jpg?v=1780502845']},
   'untitled-apr28_12-00':{title:'Comfort Hooded Shirt',price:'$55',kicker:'HOODIE / PERFORMANCE',desc:'Lightweight, breathable performance layer in an 88% polyester / 12% lyocell blend.',url:'https://southernsunfishing.com/products/untitled-apr28_12-00',images:['https://cdn.shopify.com/s/files/1/0966/4466/1534/files/DSC00851.jpg?v=1780503482','https://cdn.shopify.com/s/files/1/0966/4466/1534/files/DSC00866.jpg?v=1780503482','https://cdn.shopify.com/s/files/1/0966/4466/1534/files/DSC00768_3034055e-a46b-461c-9199-747f03dfe446.jpg?v=1781561698','https://cdn.shopify.com/s/files/1/0966/4466/1534/files/DSC00796_1752118e-34f9-4275-b475-34eb662cd3f1.jpg?v=1781561698']},
-  'southern-sun-hooded-performance-shirt':{title:'Hooded Performance Shirt',price:'$60',kicker:'HOODIE / PERFORMANCE',desc:'UPF 50+ sun protection, quick-dry stretch fabric, built-in hood, and face coverage.',url:'https://southernsunfishing.com/products/southern-sun-hooded-performance-shirt',images:['https://cdn.shopify.com/s/files/1/0966/4466/1534/files/IMG-4379.png?v=1777396117']}
+  'southern-sun-hooded-performance-shirt':{title:'Hooded Performance Shirt',price:'$60',kicker:'HOODIE / PERFORMANCE',desc:'UPF 50+ sun protection, quick-dry stretch fabric, built-in hood, and face coverage.',url:'https://southernsunfishing.com/products/southern-sun-hooded-performance-shirt',images:['https://drive.google.com/thumbnail?id=1SNJi7mH05OXt7lyCBWAZoSsqPZ-gPb0Q&sz=w1600','https://cdn.shopify.com/s/files/1/0966/4466/1534/files/IMG-4379.png?v=1777396117']}
 };
 
 let modal;
@@ -54,13 +71,3 @@ $$('.product-card .product-img').forEach(link=>{
   link.addEventListener('click',e=>{e.preventDefault();openProductModal(product);});
   link.closest('.product-card')?.addEventListener('click',e=>{if(e.target.closest('a'))return;openProductModal(product);});
 });
-
-/* Email capture section for the preview. Persistence gets connected to the chosen email platform at handoff. */
-const footer=$('footer');
-if(footer&&!$('.email-signup')){
-  const section=document.createElement('section');section.className='email-signup reveal';
-  section.innerHTML='<div><div class="eyebrow">GET ON THE LIST</div><h2>FIRST LIGHT.<br>FIRST LOOK.</h2></div><div class="email-signup-copy"><p>New drops, field notes, and first access before everyone else.</p><form class="email-signup-form" novalidate><input type="email" name="email" autocomplete="email" placeholder="EMAIL ADDRESS" aria-label="Email address" required><button type="submit">JOIN →</button></form><div class="email-signup-status" aria-live="polite"></div></div>';
-  footer.before(section);obs.observe(section);
-  const form=$('.email-signup-form',section),status=$('.email-signup-status',section);
-  form.addEventListener('submit',e=>{e.preventDefault();const input=$('input',form),email=input.value.trim();if(!/^\S+@\S+\.\S+$/.test(email)){status.textContent='ENTER A VALID EMAIL.';return;}const saved=JSON.parse(localStorage.getItem('southernSunPreviewEmails')||'[]');if(!saved.includes(email))saved.push(email);localStorage.setItem('southernSunPreviewEmails',JSON.stringify(saved));status.textContent="YOU'RE ON THE LIST.";form.reset();});
-}
