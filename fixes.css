@@ -1,17 +1,19 @@
 /* Final polish overrides — preview only */
-.site-header{background:var(--cream)!important;overflow:visible!important}
-.brand-image{display:flex!important;align-items:center!important;overflow:visible!important;min-width:210px}
-.brand-image img{width:clamp(170px,13vw,215px)!important;max-height:none!important;height:auto!important;object-fit:contain!important;object-position:center!important;mix-blend-mode:multiply!important;filter:grayscale(1) contrast(3.2) brightness(1.35)!important;background:transparent!important}
+.site-header{background:var(--cream)!important;overflow:visible!important;min-height:94px!important;padding-top:12px!important;padding-bottom:12px!important}
+.brand-image{display:flex!important;align-items:center!important;overflow:visible!important;min-width:265px!important;width:265px!important}
+.brand-image img{display:block!important;width:250px!important;max-width:none!important;max-height:none!important;height:auto!important;object-fit:contain!important;object-position:left center!important;mix-blend-mode:darken!important;filter:none!important;background:transparent!important;overflow:visible!important}
+.site-header nav{gap:38px!important;font-size:11px!important;font-weight:800!important;letter-spacing:.19em!important;white-space:nowrap!important}
+.header-actions .icon-btn,.cart-btn{font-size:10px!important}
 
 /* Keep the hero clean: only the pause/play control remains */
 .hero-side-label,.video-controls span{display:none!important}
-.video-controls{right:4.5vw!important;top:138px!important}
+.video-controls{right:4.5vw!important;top:148px!important}
 .video-controls button{background:rgba(7,20,17,.42)!important;backdrop-filter:blur(5px)}
 
 /* Product CTA should never cover the name / price */
 .quick-add{display:none!important}
 .product-img{display:block!important}
-.product-row{position:relative!important;z-index:3!important;background:var(--cream)!important;padding:15px 1px 7px!important;min-height:66px!important}
+.product-row{position:relative!important;z-index:3!important;background:transparent!important;padding:15px 1px 7px!important;min-height:66px!important}
 .product-card{cursor:pointer}
 .product-card:after{content:'VIEW DETAILS  ↗';display:inline-block;margin-top:8px;font-size:8px;font-weight:800;letter-spacing:.16em;border-bottom:1px solid rgba(8,23,19,.34);padding-bottom:4px}
 
@@ -34,8 +36,22 @@
 .product-modal-desc{font-size:12px;line-height:1.75;color:#526057;max-width:430px}
 .product-modal-shop{margin-top:30px;align-self:flex-start;display:inline-flex;gap:12px;align-items:center;background:var(--ink);color:var(--cream);padding:15px 20px;font-size:9px;font-weight:800;letter-spacing:.16em}
 
+/* Email signup — preview UI, backend can be connected at handoff */
+.email-signup{background:var(--gold);color:var(--ink);padding:82px 5vw;display:grid;grid-template-columns:1.05fr .95fr;gap:7vw;align-items:end;border-top:1px solid rgba(8,23,19,.14)}
+.email-signup .eyebrow{color:rgba(8,23,19,.64)}
+.email-signup h2{font-family:var(--display);font-size:clamp(54px,6.3vw,94px);font-weight:400;line-height:.88;margin:16px 0 0}
+.email-signup-copy p{font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(22px,2vw,31px);line-height:1.12;margin:0 0 24px;max-width:590px}
+.email-signup-form{display:flex;border-bottom:2px solid var(--ink);padding-bottom:9px;max-width:650px}
+.email-signup-form input{flex:1;min-width:0;border:0;background:transparent;outline:0;padding:12px 0;font-size:12px;font-weight:800;letter-spacing:.14em;color:var(--ink)}
+.email-signup-form input::placeholder{color:rgba(8,23,19,.58)}
+.email-signup-form button{border:0;background:var(--ink);color:var(--cream);padding:14px 22px;font-size:9px;font-weight:800;letter-spacing:.17em}
+.email-signup-status{min-height:20px;margin-top:12px;font-size:9px;font-weight:800;letter-spacing:.13em}
+
+@media(max-width:1050px){.brand-image{min-width:220px!important;width:220px!important}.brand-image img{width:210px!important}.site-header nav{gap:24px!important;font-size:10px!important}}
 @media(max-width:850px){
-  .brand-image{min-width:0}.brand-image img{width:155px!important}
-  .video-controls{top:126px!important;right:18px!important}
+  .brand-image{min-width:0!important;width:auto!important}.brand-image img{width:178px!important}
+  .video-controls{top:136px!important;right:18px!important}
   .product-modal{padding:10px}.product-modal-layout{grid-template-columns:1fr}.product-modal-main{height:52vh;min-height:360px}.product-modal-info{padding:34px 24px 32px}.product-modal-thumbs{grid-template-columns:repeat(4,1fr)}.product-modal-thumb{height:78px}
+  .email-signup{grid-template-columns:1fr;padding:64px 6vw;gap:34px}
 }
+@media(max-width:650px){.site-header{min-height:78px!important}.brand-image img{width:160px!important}.email-signup-form{display:grid;grid-template-columns:1fr auto}.email-signup-form button{padding-inline:16px}}
