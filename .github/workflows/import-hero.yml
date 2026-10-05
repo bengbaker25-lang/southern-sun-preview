@@ -1,0 +1,36 @@
+name: Import hero video
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-hero.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-video:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download compressed Southern Sun hero
+        run: |
+          mkdir -p assets
+          curl -L --fail --retry 4 --retry-delay 2 \
+            'https://drive.google.com/uc?export=download&id=1hwfLqQxGtakg0MDwjiIWsyK6dZu2o4sj' \
+            -o assets/hero.mp4
+          test $(wc -c < assets/hero.mp4) -gt 500000
+          file assets/hero.mp4
+
+      - name: Commit hero asset
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/hero.mp4
+          git diff --cached --quiet && exit 0
+          git commit -m 'Host hero video locally for reliable autoplay'
+          git push
