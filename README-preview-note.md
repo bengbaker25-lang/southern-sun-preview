@@ -1,0 +1,1 @@
+Preview build only. Shopify storefront remains untouched until explicit handoff.
