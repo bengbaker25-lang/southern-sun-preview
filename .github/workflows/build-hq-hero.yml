@@ -1,0 +1,42 @@
+name: Build HQ Hero Video
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-hq-hero.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-hero:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Download original 4K hero master
+        run: |
+          curl -L --fail --retry 3 --retry-delay 2 \
+            'https://drive.usercontent.google.com/download?id=1XEczuQ4gFN2QmrG3GnPRu4cULv4ff_aE&export=download&confirm=t' \
+            -o /tmp/southern-sun-hero.mov
+          ls -lh /tmp/southern-sun-hero.mov
+      - name: Encode high-quality web hero
+        run: |
+          ffmpeg -y -i /tmp/southern-sun-hero.mov \
+            -vf "scale=1920:-2:flags=lanczos" \
+            -c:v libx264 -preset medium -crf 20 \
+            -maxrate 8M -bufsize 16M \
+            -pix_fmt yuv420p -movflags +faststart -an \
+            assets/hero-hq.mp4
+          ls -lh assets/hero-hq.mp4
+      - name: Commit HQ hero
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/hero-hq.mp4
+          git commit -m 'Add high-quality 1080p hero video' || exit 0
+          git push
