@@ -1,0 +1,6 @@
+/* Header logo only: larger, full mark, transparent background so it color-matches the site */
+.brand-image{display:flex!important;align-items:center!important;overflow:visible!important;min-width:320px!important;max-width:360px!important;padding:0 28px 0 0!important;background:none!important;width:auto!important;height:auto!important}
+.brand-image img{display:block!important;opacity:1!important;width:clamp(270px,18vw,330px)!important;height:auto!important;max-width:none!important;max-height:64px!important;object-fit:contain!important;object-position:left center!important;mix-blend-mode:multiply!important;filter:none!important;background:transparent!important;clip-path:none!important;transform:none!important}
+@media(max-width:1200px){.brand-image{min-width:270px!important;max-width:300px!important}.brand-image img{width:270px!important}}
+@media(max-width:900px){.brand-image{min-width:0!important;max-width:none!important;padding-right:10px!important}.brand-image img{width:210px!important;max-height:56px!important}}
+@media(max-width:520px){.brand-image img{width:185px!important;max-height:50px!important}}
