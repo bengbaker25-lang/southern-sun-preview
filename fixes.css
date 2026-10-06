@@ -56,8 +56,8 @@
 }
 @media(max-width:520px){.brand-image img{width:165px!important}.preview-newsletter p{font-size:21px}.preview-newsletter form{display:grid;grid-template-columns:1fr auto;gap:8px}.preview-newsletter button{padding-inline:14px}}
 
-/* Exact full logo from the supplied reference image */
-.brand-image{background:url('assets/header-logo-full.jpg') left center/contain no-repeat!important;width:305px!important;height:64px!important;min-width:305px!important;max-width:305px!important;padding:0!important}
+/* Full trademark logo from the user-provided reference, with the complete final N visible */
+.brand-image{background:url('assets/header-logo-full-cropped.svg') left center/contain no-repeat!important;width:305px!important;height:64px!important;min-width:305px!important;max-width:305px!important;padding:0!important;overflow:visible!important}
 .brand-image img{opacity:0!important;width:305px!important;height:64px!important;transform:none!important}
 @media(max-width:1200px){.brand-image{width:245px!important;height:56px!important;min-width:245px!important;max-width:245px!important}.brand-image img{width:245px!important;height:56px!important}}
 @media(max-width:900px){.brand-image{width:190px!important;height:50px!important;min-width:190px!important;max-width:190px!important}.brand-image img{width:190px!important;height:50px!important}}
